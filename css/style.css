@@ -1,0 +1,55 @@
+@charset "UTF-8";
+body {
+    max-width: 800px;
+    margin: 0 auto; 
+    background-color: ivory;
+    text-align: center;
+}
+h1 {
+    color: blueviolet;
+}
+h3 {
+    font-size: 20px;
+}
+p {
+    font-size: 25px; 
+    font-weight: 700;
+}
+input {
+    width: 80%; 
+    height: 5em; 
+    margin: 2px; 
+    background-color: yellow; 
+    border-radius: 15px; 
+    font-size: 20px; 
+    font-weight: 700;
+    text-align: center;
+}
+
+#group1, #group2 {
+    width: 45%; 
+    margin: 15px; 
+    padding: 20px;
+    background-color: white;
+}
+
+#gameCount {
+    font-size: 30px;
+    color: blueviolet; 
+}
+
+#selectHandDecide {
+    margin-bottom: 30px;
+}
+
+#resultReport {
+   color: blueviolet; 
+   font-size: 30px;
+   font-weight: 700;
+}
+
+#plHand1, #plHand2, #plHand3, #plHand4, #plHand5, #plHand6 {
+    width: 15%; 
+    border: transparent; 
+    background-color: ivory;
+} 

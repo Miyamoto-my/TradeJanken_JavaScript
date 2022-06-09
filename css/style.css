@@ -1,55 +1,24 @@
-@charset "UTF-8";
+@charset 'UTF-8';
+
 body {
-    max-width: 800px;
-    margin: 0 auto; 
-    background-color: ivory;
     text-align: center;
+    margin: 0 auto;
 }
-h1 {
-    color: blueviolet;
-}
-h3 {
-    font-size: 20px;
-}
-p {
-    font-size: 25px; 
-    font-weight: 700;
-}
-input {
-    width: 80%; 
-    height: 5em; 
-    margin: 2px; 
-    background-color: yellow; 
-    border-radius: 15px; 
-    font-size: 20px; 
-    font-weight: 700;
+
+.first_hand {
+    margin: 0 auto;
     text-align: center;
+    align-items: center;
 }
-
-#group1, #group2 {
-    width: 45%; 
-    margin: 15px; 
-    padding: 20px;
-    background-color: white;
+.first_hand div {
+    display: inline-block;
+    margin: 5px;
+    padding: 20px 3px;
+    width: 45%;
+    background-color: aqua;
+    border-radius: 10px;
 }
-
-#gameCount {
-    font-size: 30px;
-    color: blueviolet; 
+.first_hand img {
+    margin: 2px;
+    max-width: 30%;
 }
-
-#selectHandDecide {
-    margin-bottom: 30px;
-}
-
-#resultReport {
-   color: blueviolet; 
-   font-size: 30px;
-   font-weight: 700;
-}
-
-#plHand1, #plHand2, #plHand3, #plHand4, #plHand5, #plHand6 {
-    width: 15%; 
-    border: transparent; 
-    background-color: ivory;
-} 

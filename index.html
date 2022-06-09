@@ -2,100 +2,26 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Trade-Janken</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/main.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <title>TradeJanken</title>
 </head>
 <body>
     <h1>トレードジャンケン</h1>
-
-    <!-- スタート画面 -->
-    <section id="firstDisplay" style="display: inline;">
-        <h3>
-            ルール説明<br>配られた６枚の手札を使って僕と勝負しよう！<br>
-            一度使った手札は二度使えないよ～<br>６回の勝負の結果、勝ち数が僕より多かったら君の勝利だ！ 
-        </h3>
-        <input type="button" value="ゲームを始めますか？&emsp;Click Here" onclick= "gamePreparation()">
+    <section id="start_dispay-section">
+        <h2>ルール説明</h2>
+        <ul>
+            <li>hogehoge</li>
+            <li>hogehoge</li>
+            <li>hogehoge</li>
+        </ul>
+        <input type="button" value="ゲームを始めますか?" id="start-button">
     </section>
-    
-    <!-- ゲーム画面 -->
-    <section id="gameDisplay">
-        <!-- ゲーム開始「手札の交換」  -->
-        <div id="tradeDisplay" style="display: none;">
-            <h2>
-                これから１グループ３枚の手札を２つ配るよ！<br>そのうちの、どちらか片方を僕と交換しよう！<br>
-            </h2>
-            <p id="changeComment1">交換するグループをクリックしてね</p>
-            <input id="tradeHandDecide" type="button" value="確定&emsp;Click Here" onclick= "gameReady()" style="display: none;">
-    
-            <button id="group1" onclick="exchangeHand('group1')">
-                <img id="firstHand1" src="img/ura.jpg" style="max-width: 32%;">
-                <img id="firstHand2" src="img/ura.jpg" style="max-width: 32%;">
-                <img id="firstHand3" src="img/ura.jpg" style="max-width: 32%;">
-                <h2>グループ１</h2>
-            </button>
-            
-            <button id="group2" onclick="exchangeHand('group2')">
-                <img id="firstHand4" src="img/ura.jpg" style="max-width: 32%;">
-                <img id="firstHand5" src="img/ura.jpg" style="max-width: 32%;">
-                <img id="firstHand6" src="img/ura.jpg" style="max-width: 32%;">
-                <h2>グループ２</h2>
-            </button>
-        </div>
 
-        <!-- トレード終了、最終手札表示 -->
-        <div id="tradeCompletDisplay" style="display: none;">
-            <h2>交換終了！</h2>
-            <div style="border: 5px double; width: 42%; padding: 10px; display: inline-block;">
-                <img id="afterTradeHand1" src="img/ura.jpg" style="width: 30%;">
-                <img id="afterTradeHand2" src="img/ura.jpg" style="width: 30%;">
-                <img id="afterTradeHand3" src="img/ura.jpg" style="width: 30%;">
-                <h2>残した手札</h2>
-            </div>
-            <div style="border: 5px double; width: 42%; padding: 10px; display: inline-block;">
-                <img id="afterTradeHand4" src="img/ura.jpg" style="width: 30%;">
-                <img id="afterTradeHand5" src="img/ura.jpg" style="width: 30%;">
-                <img id="afterTradeHand6" src="img/ura.jpg" style="width: 30%;">
-                <h2>相手から受け取った手札</h2>
-            </div>
-            <h2>さぁ、ゲームを始めよう！</h2>
-            <input type="button" value="Click Here" onclick="gameStart()">
-        </div>
-
-        <!-- ゲームカウント -->
-        <p id="gameCount" style="display: none;">1戦目</p><br>
-
-        <!-- カード選択 -->
-        <div id="selectHandDisplay" style="display: none;">
-            <img id="selectHand" src="img/ura.jpg" style="max-width: 20%;"><br>
-            <h2 id="changeComment2">出す手札をクリック</h2>
-            <input id="selectHandDecide" type="button" value="確定&emsp;Click Here" onclick="readyFight()" style="display: none;"><br>
-            <button id="plHand1" onclick="selectHand('plHand1')"><img style="max-width: 100%;" src="img/ura.jpg"></button>
-            <button id="plHand2" onclick="selectHand('plHand2')"><img style="max-width: 100%;" src="img/ura.jpg"></button>
-            <button id="plHand3" onclick="selectHand('plHand3')"><img style="max-width: 100%;" src="img/ura.jpg"></button>
-            <button id="plHand4" onclick="selectHand('plHand4')"><img style="max-width: 100%;" src="img/ura.jpg"></button>
-            <button id="plHand5" onclick="selectHand('plHand5')"><img style="max-width: 100%;" src="img/ura.jpg"></button>
-            <button id="plHand6" onclick="selectHand('plHand6')"><img style="max-width: 100%;" src="img/ura.jpg"></button>
-        </div>
-
-        <!-- 勝負表示 -->
-        <div id="matchDisplay" style="display: none;">
-            <h2>じゃんけんほい！！</h1>
-            <h2>相手の手札</h2>
-            <img id="teMatchHand" src="#" style="max-width: 20%;">
-            <h2>あなたの手札</h2>
-            <img id="plMatchHand" src="#" style="max-width: 20%;">
-            <p id="resultReport"></p>
-            <input id="changeComment3" type="button" value="次のゲーム！&emsp;Click Here" onclick="gameSet()">
-        </div>
-
-        <!-- 対戦結果を表示する -->
-        <div id="finalJudgeDisplay" style="display: none;">
-            <h2>結果発表</h2>
-            <p id="allResults" style="font-size: 25px; font-weight: 800"></p>
-            <input type="botton" value="スタート画面に戻ります&emsp;Click Here" onclick="returnFirst()"> 
-        </div>
+    <section id="game_display-section">
+        <div id="swap_hand"></div>
     </section>
-    
-    <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

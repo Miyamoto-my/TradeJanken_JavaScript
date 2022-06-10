@@ -10,7 +10,10 @@ function Game() {
     this.player = new MyHand();
     this.computer = new MyHand();
 
-    this.FirstHandView();
+    this.playerChooseHand = 999;
+    this.computerChooseHand = 999;
+
+    this.FirstHandShow();
 }
 Game.prototype = {
     HandSwap: function() {
@@ -27,14 +30,18 @@ Game.prototype = {
             this.player.firstHand.filter(val => val.group == plSwap), 
             this.computer.firstHand.filter(val => val.group == NOT_SWAP(cpSwap))
         );
+
+        console.log(this.player);
+
+        this.FinalHandShow();
     },
 
-    Judge: function(a, b) {
-        //  result対応表 : a が b に
+    Judge: function() {
+        //  result対応表 : player が computer に
         //  0 -> draw
         //  1 -> lose
         //  2 -> win
-        let result = (a - b + 3) % 3; 
+        let result = (this.playerChooseHand - this.computerChooseHand + 3) % 3; 
         switch (result) {
             case 0:
                 return 'draw';
@@ -46,11 +53,87 @@ Game.prototype = {
                 return 'error';
         }
     },
+    
+    MessageShow: function(messageText = '') {
+        let messageElement = document.getElementById('message');
+        messageElement.innerHTML = messageText;
 
-    FirstHandView: function() {
+        let actionChildrenElement = document.getElementById('action').children;
+        for (let i = 0; i < actionChildrenElement.length; i ++) {
+            actionChildrenElement[i].style.display = 'none';
+        }
+    },
+
+    FirstHandShow: function() {
         let parentElement = document.getElementById('swap_hand');
+        let doSwapElement = document.getElementById('do_swap-button');
         parentElement.appendChild(this.player.firstHandElement);
+
+        document.getElementById('group1').addEventListener('click', () => {
+            this.player.swapHandIndex = 0;
+            this.MessageShow('グループ1を交換しますか?');
+            doSwapElement.style.display = "inline";
+        });
+        document.getElementById('group2').addEventListener('click', () => {
+            this.player.swapHandIndex = 1;
+            this.MessageShow('グループ2を交換しますか?');
+            doSwapElement.style.display = "inline";
+        });
+
+        doSwapElement.addEventListener('click', () => {
+            this.HandSwap();
+        })
+    },
+
+    FinalHandShow: function() {
+        document.getElementById('swap_hand').style.display = 'none';
+        let doSelect = document.getElementById('do_select-button');
+
+        let parentElement = document.getElementById('select_hand');
+        parentElement.appendChild(this.player.finalHandElement);
+
+        this.gameCount ++;
+        if (this.gameCount <= 6) {
+            let messageText = String(this.gameCount) + '戦目<br>出す手札を選択!';
+            this.MessageShow(messageText);
+        }
+
+        let handsImg = document.getElementsByClassName('final_hand')[0].children;
+        for (let index = 0; index < handsImg.length; index ++) {
+            handsImg[index].addEventListener('click', () => {
+                let selectHand = this.player.finalHand[index];
+                if (selectHand.unUsed) {
+                    this.playerChooseHand = selectHand.hand;
+                    let messageText = HAND_NAME[selectHand.hand] + "でOK?";
+                    this.MessageShow(messageText);
+                    doSelect.style.display = "inline";
+                }
+            });
+        }
+
+        doSelect.addEventListener('click', () => {
+            this.computerChooseHand = this.computer.Choose();
+            this.result.push(this.Judge());
+            console.log(this.result);
+            
+            parentElement.style.display = 'none';
+            //this.ResultShow();
+        });
+    },
+
+    ResultShow: function() {
+        let parentElement = document.getElementById('result');
+        
+        let cpImgElement = this.computer.ResultImg(this.computerChooseHand);
+        let plImgElement = this.player.ResultImg(this.playerChooseHand);
+
+        console.log(cpImgElement, plImgElement);
+
+        parentElement.appendChild(cpImgElement);
+        parentElement.appendChild(plImgElement);
+
     }
+    
 }
 
 function MyHand() {
@@ -69,11 +152,12 @@ function MyHand() {
 MyHand.prototype = {
     SetFirstHand: function() {
         let group0 = document.createElement('div');
-        group0.className = 'group1';
+        group0.id = 'group1';
         let group1 = document.createElement('div');
-        group1.className = 'group2';
+        group1.id = 'group2';
         let group0Content = document.createTextNode('グループ1');
         let group1Content = document.createTextNode('グループ2');
+
         for (let i = 0; i < this.firstHand.length; i ++) {
             let group = i < 3 ? 0 : 1;
             const HAND = new Hand(group);
@@ -87,6 +171,7 @@ MyHand.prototype = {
         }
         group0.appendChild(group0Content);
         group1.appendChild(group1Content);
+        
         this.firstHandElement.appendChild(group0)
         this.firstHandElement.appendChild(group1);
     },
@@ -95,6 +180,13 @@ MyHand.prototype = {
         let joinArray = new Array();
         joinArray.push(array1, array2);
         this.finalHand = joinArray.flat(Infinity);
+
+        for (let i in this.finalHand) {
+            let parentElement = document.createElement('div');
+            parentElement.id = 'hand_img' + String(i);
+            parentElement.appendChild(this.finalHand[i].handElement)
+            this.finalHandElement.appendChild(parentElement);
+        }
     },
 
     Choose: function() {
@@ -105,19 +197,26 @@ MyHand.prototype = {
             return this.Choose();
         }
     },
+
+    ResultImg: function(index) {
+        let resultImgElement = document.createElement('div');
+        resultImgElement.appendChild(this.finalHand[index].handElement);
+        return resultImgElement;
+    }
 }
 
 //  HANDの対応表
 //  0 -> gu-
 //  1 -> tyoki
 //  e -> pa-
-const ALL_HAND = [0, 1, 2, 999]
+const ALL_HAND = [0, 1, 2, 999];
+const HAND_NAME = ['グー', 'チョキ', 'パー', 'ウラ'];
 const HAND_IMAGE = {
     0: './img/gu-.jpg',
     1: './img/tyoki.jpg',
     2: './img/pa-.jpg',
     999: './img/ura.jpg',
-}
+};
 
 function Hand(group) {
     let randomNum = Math.floor(Math.random() * 3);
@@ -138,9 +237,8 @@ Hand.prototype = {
 
 
 window.onload = () => {
-    let hoge = new Game();
-    hoge.HandSwap();
-    console.log(hoge);
+    const GAME = new Game();
+    console.log(GAME);
 }
 
 /**

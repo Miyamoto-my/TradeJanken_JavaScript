@@ -5,6 +5,12 @@ body {
     margin: 0 auto;
 }
 
+
+#action * {
+    display: none;
+}
+
+
 .first_hand {
     margin: 0 auto;
     text-align: center;
@@ -15,10 +21,24 @@ body {
     margin: 5px;
     padding: 20px 3px;
     width: 45%;
-    background-color: aqua;
+    background-color: beige;
     border-radius: 10px;
+    border: solid 2px black;
 }
 .first_hand img {
     margin: 2px;
     max-width: 30%;
+}
+.final_hand {
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+}
+.final_hand div {
+    margin: 2px;
+    display: inline-block;
+    max-width: 15%;
+}
+.final_hand img {
+    width: 100%;
 }

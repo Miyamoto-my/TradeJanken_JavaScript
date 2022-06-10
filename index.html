@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/jquery-3.6.0.min.js"></script>
     <script src="./js/main.js"></script>
     <link rel="stylesheet" href="./css/style.css">
     <title>TradeJanken</title>
 </head>
 <body>
     <h1>トレードジャンケン</h1>
-    <section id="start_dispay-section">
+    <!-- <section id="start_dispay-section">
         <h2>ルール説明</h2>
         <ul>
             <li>hogehoge</li>
@@ -18,10 +19,18 @@
             <li>hogehoge</li>
         </ul>
         <input type="button" value="ゲームを始めますか?" id="start-button">
-    </section>
+    </section> -->
 
     <section id="game_display-section">
+        <div id="message"></div>
+        <div id="action">
+            <input type="button" value="はい" id="do_swap-button">
+            <input type="button" value="決定" id="do_select-button">
+        </div>
         <div id="swap_hand"></div>
+        <div id="select_hand"></div>
+        <div id="restult"></div>
     </section>
+    
 </body>
 </html>

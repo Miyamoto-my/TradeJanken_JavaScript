@@ -163,7 +163,6 @@ Game.prototype = {
                 break;
             default:
                 resultText = 'Error';
-                break;
         }
 
         this.gameCount ++;
@@ -288,39 +287,3 @@ window.onload = () => {
     const GAME = new Game();
     console.log(GAME);
 }
-
-/**
- -------------------------------------------------- *
-
-let a = 1;  //gu
-let b = 2;  //tyoki
-//  result対応表 a が b に
-//  0 -> draw
-//  1 -> lose
-//  2 -> win
-let result = (a - b + 3) % 3; 
-
-let aArray = [
-    {hand: 0, group: 0, unUsed: false}, // 0
-    {hand: 1, group: 0, unUsed: true},  // 1
-    {hand: 2, group: 0, unUsed: false}, // 2
-    {hand: 0, group: 1, unUsed: true},  // 3
-    {hand: 1, group: 1, unUsed: false}, // 4
-    {hand: 2, group: 1, unUsed: true},  // 5
-];
-
-function hogehoge() {
-    let chooseNum = Math.floor(Math.random() * 6);
-    console.log(aArray[chooseNum]);
-    if (aArray[chooseNum].unUsed) {
-        return chooseNum;
-    } else {
-        return hogehoge();
-    }
-}
-
-console.log(hogehoge());
-
-
-
-/** */

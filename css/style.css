@@ -29,6 +29,16 @@ body {
     margin: 2px;
     max-width: 30%;
 }
+.select_img {
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+    max-width: 20%;
+}
+.select_img img {
+    width: 100%;
+}
+
 .final_hand {
     margin: 0 auto;
     text-align: center;
@@ -40,5 +50,15 @@ body {
     max-width: 15%;
 }
 .final_hand img {
+    width: 100%;
+}
+
+#result div {
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+    width: 30%;
+}
+#result img {
     width: 100%;
 }

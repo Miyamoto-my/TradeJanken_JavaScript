@@ -10,8 +10,8 @@ function Game() {
     this.player = new MyHand();
     this.computer = new MyHand();
 
-    this.playerChooseHand = 999;
-    this.computerChooseHand = 999;
+    this.playerChooseIndex = 0;
+    this.computerChooseIndex = 0;
 
     this.FirstHandShow();
 }
@@ -41,7 +41,9 @@ Game.prototype = {
         //  0 -> draw
         //  1 -> lose
         //  2 -> win
-        let result = (this.playerChooseHand - this.computerChooseHand + 3) % 3; 
+        let plHand = this.player.finalHand[this.playerChooseIndex].hand;
+        let cpHand = this.computer.finalHand[this.computerChooseIndex].hand;
+        let result = (plHand - cpHand + 3) % 3; 
         switch (result) {
             case 0:
                 return 'draw';
@@ -81,57 +83,103 @@ Game.prototype = {
         });
 
         doSwapElement.addEventListener('click', () => {
+            parentElement.innerHTML = '';
             this.HandSwap();
-        })
+        });
     },
 
     FinalHandShow: function() {
-        document.getElementById('swap_hand').style.display = 'none';
         let doSelect = document.getElementById('do_select-button');
 
         let parentElement = document.getElementById('select_hand');
+        let selectImgElement = document.createElement('div');
+        selectImgElement.className = 'select_img';
+        let selectImgContent = document.createElement('img');
+        selectImgContent.id = 'select_img';
+        selectImgContent.src = HAND_IMAGE[999];
+        selectImgElement.appendChild(selectImgContent);
+        parentElement.appendChild(selectImgElement);
         parentElement.appendChild(this.player.finalHandElement);
 
-        this.gameCount ++;
-        if (this.gameCount <= 6) {
-            let messageText = String(this.gameCount) + '戦目<br>出す手札を選択!';
-            this.MessageShow(messageText);
-        }
+        let messageText = String(this.gameCount + 1) + '戦目<br>出す手札を選択!';
+        this.MessageShow(messageText);
 
         let handsImg = document.getElementsByClassName('final_hand')[0].children;
         for (let index = 0; index < handsImg.length; index ++) {
             handsImg[index].addEventListener('click', () => {
                 let selectHand = this.player.finalHand[index];
                 if (selectHand.unUsed) {
-                    this.playerChooseHand = selectHand.hand;
-                    let messageText = HAND_NAME[selectHand.hand] + "でOK?";
+                    this.playerChooseIndex = index;
+                    let messageText = HAND_NAME[selectHand.hand] + 'でOK?';
                     this.MessageShow(messageText);
+                    selectImgContent.src = HAND_IMAGE[selectHand.hand];
                     doSelect.style.display = "inline";
                 }
             });
         }
 
         doSelect.addEventListener('click', () => {
-            this.computerChooseHand = this.computer.Choose();
-            this.result.push(this.Judge());
-            console.log(this.result);
-            
-            parentElement.style.display = 'none';
-            //this.ResultShow();
+            this.computerChooseIndex = this.computer.Choose();
+            parentElement.innerHTML = '';
+            this.ResultShow();
         });
     },
 
     ResultShow: function() {
         let parentElement = document.getElementById('result');
         
-        let cpImgElement = this.computer.ResultImg(this.computerChooseHand);
-        let plImgElement = this.player.ResultImg(this.playerChooseHand);
+        let cpTextElement = document.createElement('h2');
+        let cpTextContetn = document.createTextNode('コンピュータが出した手札は');
+        cpTextElement.appendChild(cpTextContetn);
+        let cpImgElement = document.createElement('div');
+        let cpImgContent = this.computer.ImgShow(this.computerChooseIndex);
+        cpImgElement.appendChild(cpImgContent);
 
-        console.log(cpImgElement, plImgElement);
+        let plTextElement = document.createElement('h2');
+        let plTextContetn = document.createTextNode('あなたが出した手札は');
+        plTextElement.appendChild(plTextContetn);
+        let plImgElement = document.createElement('div');
+        let plImgContent = this.player.ImgShow(this.playerChooseIndex);
+        plImgElement.appendChild(plImgContent);
+        
 
+        parentElement.appendChild(cpTextElement);
         parentElement.appendChild(cpImgElement);
+        parentElement.appendChild(plTextElement);
         parentElement.appendChild(plImgElement);
+        
+        this.result.push(this.Judge());
 
+        let resultText = '';
+        switch (this.result[this.gameCount]) {
+            case 'win':
+                resultText = 'あなたの勝ち!';
+                break;
+            case 'lose':
+                resultText = 'コンピュータの勝ち!';
+                break;
+            case 'draw':
+                resultText = '引き分け!';
+                break;
+            default:
+                resultText = 'Error';
+                break;
+        }
+
+        this.gameCount ++;
+
+        this.MessageShow(resultText);
+        let doNext = document.getElementById('do_next-button');
+        let doAllResult = document.getElementById('do_all_result-button');
+        if (this.gameCount < 6) {     
+            doNext.style.display = 'inline';
+        } else {
+            doAllResult.style.display = 'inline';
+        }
+        doNext.addEventListener('click', () => {
+            parentElement.innerHTML = '';
+            this.FinalHandShow();
+        });
     }
     
 }
@@ -198,10 +246,10 @@ MyHand.prototype = {
         }
     },
 
-    ResultImg: function(index) {
-        let resultImgElement = document.createElement('div');
-        resultImgElement.appendChild(this.finalHand[index].handElement);
-        return resultImgElement;
+    ImgShow: function(index) {
+        let imgElement = document.createElement('img');
+        imgElement.src = HAND_IMAGE[this.finalHand[index].hand];
+        return imgElement;
     }
 }
 
